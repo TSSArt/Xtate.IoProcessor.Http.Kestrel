@@ -4,8 +4,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;netstandard2.0;net462</TargetFrameworks>
-    <RootNamespace>Xtate</RootNamespace>
-    <Nullable>enable</Nullable>
     <PackageId>Xtate.IoProcessor.Http.Kestrel</PackageId>
     <RepositoryUrl>https://github.com/TSSArt/Xtate.IoProcessor.Http.Kestrel</RepositoryUrl>
   </PropertyGroup>
@@ -20,7 +18,6 @@
 
   <ItemGroup>
     <PackageReference Include="Xtate.SharedContent" Version="0.*" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" PrivateAssets="all" />
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
   </ItemGroup>
 
