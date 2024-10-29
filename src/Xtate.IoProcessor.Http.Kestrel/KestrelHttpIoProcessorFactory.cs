@@ -25,7 +25,8 @@ namespace Xtate.IoProcessor;
 
 public sealed class KestrelHttpIoProcessorFactory : IIoProcessorFactory
 {
-	private readonly Uri        _baseUri;
+	private readonly Uri _baseUri;
+
 	private readonly IPEndPoint _ipEndPoint;
 
 	public KestrelHttpIoProcessorFactory(Uri baseUri, IPEndPoint ipEndPoint)

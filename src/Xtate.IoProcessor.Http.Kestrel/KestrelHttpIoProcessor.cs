@@ -25,8 +25,10 @@ namespace Xtate.IoProcessor;
 
 internal sealed class KestrelHttpIoProcessor : HttpIoProcessorBase<KestrelHttpIoProcessorHost, HttpContext>
 {
-	private const string Id          = @"http://www.w3.org/TR/scxml/#BasicHTTPEventProcessor";
-	private const string Alias       = @"http";
+	private const string Id = @"http://www.w3.org/TR/scxml/#BasicHTTPEventProcessor";
+
+	private const string Alias = @"http";
+
 	private const string ErrorSuffix = @"Kestrel";
 
 	public KestrelHttpIoProcessor(IEventConsumer eventConsumer, Uri baseUri, IPEndPoint ipEndPoint) : base(eventConsumer, baseUri, ipEndPoint, Id, Alias, ErrorSuffix) { }
