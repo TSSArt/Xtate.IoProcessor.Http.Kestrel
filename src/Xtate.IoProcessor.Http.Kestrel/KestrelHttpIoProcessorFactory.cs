@@ -37,9 +37,9 @@ public sealed class KestrelHttpIoProcessorFactory : IIoProcessorFactory
 
 #region Interface IIoProcessorFactory
 
-	public async ValueTask<IIoProcessor> Create(IEventConsumer eventConsumer, CancellationToken token)
+	public async ValueTask<IEventRouter> Create(IEventConsumer eventConsumer, CancellationToken token)
 	{
-		var httpIoProcessor = new KestrelHttpIoProcessor(eventConsumer, _baseUri, _ipEndPoint);
+		var httpIoProcessor = new KestrelHttpIoProcessor(eventConsumer, _baseUri, _ipEndPoint) { StateMachineSessionId = null };
 
 		await httpIoProcessor.Start(token).ConfigureAwait(false);
 
