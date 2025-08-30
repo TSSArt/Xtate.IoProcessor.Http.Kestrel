@@ -3,12 +3,12 @@
   <Import Condition="'$(Version)'==''" Project="..\..\Version.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net8.0;netstandard2.0;net462</TargetFrameworks>
+    <TargetFrameworks>net10.0;net9.0;net8.0;netstandard2.0;net462</TargetFrameworks>
     <PackageId>Xtate.IoProcessor.Http.Kestrel</PackageId>
     <RepositoryUrl>https://github.com/TSSArt/Xtate.IoProcessor.Http.Kestrel</RepositoryUrl>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net9.0' or '$(TargetFramework)'=='net8.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net10.0' or '$(TargetFramework)'=='net9.0' or '$(TargetFramework)'=='net8.0'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
