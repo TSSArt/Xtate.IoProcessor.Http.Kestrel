@@ -1,4 +1,4 @@
-﻿// Copyright © 2019-2024 Sergii Artemenko
+﻿// Copyright © 2019-2025 Sergii Artemenko
 // 
 // This file is part of the Xtate project. <https://xtate.net/>
 // 
@@ -26,23 +26,23 @@ namespace Xtate.IoProcessor;
 internal sealed class KestrelHttpIoProcessor(IEventConsumer eventConsumer, Uri baseUri, IPEndPoint ipEndPoint)
     : HttpIoProcessorBase<KestrelHttpIoProcessorHost, HttpContext>(eventConsumer, baseUri, ipEndPoint, Id, Alias, ErrorSuffix)
 {
-	private static readonly FullUri Id = new (@"http://www.w3.org/TR/scxml/#BasicHTTPEventProcessor");
+    private const string ErrorSuffix = @"Kestrel";
 
-	private static readonly FullUri Alias = new (@"http");
+    private static readonly FullUri Id = new(@"http://www.w3.org/TR/scxml/#BasicHTTPEventProcessor");
 
-	private const string ErrorSuffix = @"Kestrel";
+    private static readonly FullUri Alias = new(@"http");
 
     protected override KestrelHttpIoProcessorHost CreateHost(IPEndPoint ipEndPoint) => new(ipEndPoint);
 
-	protected override string GetPath(HttpContext context) => context.Request.Path;
+    protected override string GetPath(HttpContext context) => context.Request.Path;
 
-	protected override string? GetHeaderValue(HttpContext context, string name) => context.Request.Headers[name];
+    protected override string? GetHeaderValue(HttpContext context, string name) => context.Request.Headers[name];
 
-	protected override IPAddress? GetRemoteAddress(HttpContext context) => context.Connection.RemoteIpAddress;
+    protected override IPAddress? GetRemoteAddress(HttpContext context) => context.Connection.RemoteIpAddress;
 
-	protected override string GetQueryString(HttpContext context) => context.Request.QueryString.Value;
+    protected override string GetQueryString(HttpContext context) => context.Request.QueryString.Value;
 
-	protected override Stream GetBody(HttpContext context) => context.Request.Body;
+    protected override Stream GetBody(HttpContext context) => context.Request.Body;
 
-	protected override string GetMethod(HttpContext context) => context.Request.Method;
+    protected override string GetMethod(HttpContext context) => context.Request.Method;
 }

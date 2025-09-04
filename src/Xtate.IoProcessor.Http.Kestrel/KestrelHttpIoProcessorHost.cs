@@ -1,4 +1,4 @@
-﻿// Copyright © 2019-2024 Sergii Artemenko
+﻿// Copyright © 2019-2025 Sergii Artemenko
 // 
 // This file is part of the Xtate project. <https://xtate.net/>
 // 
@@ -28,67 +28,67 @@ namespace Xtate.IoProcessor;
 
 internal sealed class KestrelHttpIoProcessorHost : HttpIoProcessorHostBase<KestrelHttpIoProcessorHost, HttpContext>, IDisposable, IAsyncDisposable
 {
-	private readonly IWebHost _webHost;
+    private readonly IWebHost _webHost;
 
-	public KestrelHttpIoProcessorHost(IPEndPoint ipEndPoint)
-	{
-		_webHost = new WebHostBuilder()
-				   .Configure(builder => builder.Run(HandleRequest))
-				   .UseKestrel(ConfigureOptions)
-				   .Build();
+    public KestrelHttpIoProcessorHost(IPEndPoint ipEndPoint)
+    {
+        _webHost = new WebHostBuilder()
+                   .Configure(builder => builder.Run(HandleRequest))
+                   .UseKestrel(ConfigureOptions)
+                   .Build();
 
-		void ConfigureOptions(KestrelServerOptions options)
-		{
-			options.AllowSynchronousIO = false;
+        void ConfigureOptions(KestrelServerOptions options)
+        {
+            options.AllowSynchronousIO = false;
 
-			if (ipEndPoint.Address.Equals(IPAddress.Any) || ipEndPoint.Address.Equals(IPAddress.IPv6Any))
-			{
-				options.ListenAnyIP(ipEndPoint.Port);
-			}
-			else if (IPAddress.IsLoopback(ipEndPoint.Address))
-			{
-				options.ListenLocalhost(ipEndPoint.Port);
-			}
-			else
-			{
-				options.Listen(ipEndPoint);
-			}
-		}
-	}
+            if (ipEndPoint.Address.Equals(IPAddress.Any) || ipEndPoint.Address.Equals(IPAddress.IPv6Any))
+            {
+                options.ListenAnyIP(ipEndPoint.Port);
+            }
+            else if (IPAddress.IsLoopback(ipEndPoint.Address))
+            {
+                options.ListenLocalhost(ipEndPoint.Port);
+            }
+            else
+            {
+                options.Listen(ipEndPoint);
+            }
+        }
+    }
 
 #region Interface IAsyncDisposable
 
-	public ValueTask DisposeAsync()
-	{
-		_webHost.Dispose();
+    public ValueTask DisposeAsync()
+    {
+        _webHost.Dispose();
 
-		return default;
-	}
+        return default;
+    }
 
 #endregion
 
 #region Interface IDisposable
 
-	public void Dispose() => _webHost.Dispose();
+    public void Dispose() => _webHost.Dispose();
 
 #endregion
 
-	private async Task HandleRequest(HttpContext context)
-	{
-		foreach (var httpIoProcessor in Processors)
-		{
-			if (await httpIoProcessor.Handle(context, context.RequestAborted).ConfigureAwait(false))
-			{
-				context.Response.StatusCode = (int) HttpStatusCode.NoContent;
+    private async Task HandleRequest(HttpContext context)
+    {
+        foreach (var httpIoProcessor in Processors)
+        {
+            if (await httpIoProcessor.Handle(context, context.RequestAborted).ConfigureAwait(false))
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.NoContent;
 
-				return;
-			}
-		}
+                return;
+            }
+        }
 
-		context.Response.StatusCode = (int) HttpStatusCode.NotFound;
-	}
+        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+    }
 
-	protected override ValueTask StartHost(CancellationToken token) => new(_webHost.StartAsync(token));
+    protected override ValueTask StartHost(CancellationToken token) => new(_webHost.StartAsync(token));
 
-	protected override ValueTask StopHost(CancellationToken token) => new(_webHost.StopAsync(token));
+    protected override ValueTask StopHost(CancellationToken token) => new(_webHost.StopAsync(token));
 }
