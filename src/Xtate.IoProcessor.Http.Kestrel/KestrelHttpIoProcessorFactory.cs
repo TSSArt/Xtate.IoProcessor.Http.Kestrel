@@ -23,23 +23,13 @@ using Xtate.Core;
 
 namespace Xtate.IoProcessor;
 
-public sealed class KestrelHttpIoProcessorFactory : IIoProcessorFactory
+public sealed class KestrelHttpIoProcessorFactory(Uri baseUri, IPEndPoint ipEndPoint) : IIoProcessorFactory
 {
-	private readonly Uri _baseUri;
-
-	private readonly IPEndPoint _ipEndPoint;
-
-	public KestrelHttpIoProcessorFactory(Uri baseUri, IPEndPoint ipEndPoint)
-	{
-		_baseUri = baseUri;
-		_ipEndPoint = ipEndPoint;
-	}
-
 #region Interface IIoProcessorFactory
 
 	public async ValueTask<IEventRouter> Create(IEventConsumer eventConsumer, CancellationToken token)
 	{
-		var httpIoProcessor = new KestrelHttpIoProcessor(eventConsumer, _baseUri, _ipEndPoint) { StateMachineSessionId = null };
+		var httpIoProcessor = new KestrelHttpIoProcessor(eventConsumer, baseUri, ipEndPoint) { StateMachineSessionId = null };
 
 		await httpIoProcessor.Start(token).ConfigureAwait(false);
 

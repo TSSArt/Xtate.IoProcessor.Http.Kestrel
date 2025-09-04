@@ -23,7 +23,8 @@ using Xtate.Core;
 
 namespace Xtate.IoProcessor;
 
-internal sealed class KestrelHttpIoProcessor : HttpIoProcessorBase<KestrelHttpIoProcessorHost, HttpContext>
+internal sealed class KestrelHttpIoProcessor(IEventConsumer eventConsumer, Uri baseUri, IPEndPoint ipEndPoint)
+    : HttpIoProcessorBase<KestrelHttpIoProcessorHost, HttpContext>(eventConsumer, baseUri, ipEndPoint, Id, Alias, ErrorSuffix)
 {
 	private static readonly FullUri Id = new (@"http://www.w3.org/TR/scxml/#BasicHTTPEventProcessor");
 
@@ -31,9 +32,7 @@ internal sealed class KestrelHttpIoProcessor : HttpIoProcessorBase<KestrelHttpIo
 
 	private const string ErrorSuffix = @"Kestrel";
 
-	public KestrelHttpIoProcessor(IEventConsumer eventConsumer, Uri baseUri, IPEndPoint ipEndPoint) : base(eventConsumer, baseUri, ipEndPoint, Id, Alias, ErrorSuffix) { }
-
-	protected override KestrelHttpIoProcessorHost CreateHost(IPEndPoint ipEndPoint) => new(ipEndPoint);
+    protected override KestrelHttpIoProcessorHost CreateHost(IPEndPoint ipEndPoint) => new(ipEndPoint);
 
 	protected override string GetPath(HttpContext context) => context.Request.Path;
 
